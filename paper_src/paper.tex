@@ -16,26 +16,45 @@
 \usepackage{amsmath}
 \usepackage{placeins}
 \usepackage{cleveref}
+
+
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
 \title{Mind The Gap: Real-time Decentralized Distance Estimation using Ultrasound and Bluetooth across Multiple Smartphones}
 
 
-
 \author{
-  Devansh~R.~Agrawal \thanks{Please send all correspondence and questions to River Baig, \texttt{river@hackpartners.com}} \thanks{Department of Aeronautics, Imperial College London. \texttt{devansh@hackpartners.com}}\\
-  Hack Partners Limited, London
-   \And
- Peter~Lyon  \thanks{\texttt{peter@yakconsultancy.com}}\\
-  Hack Partners Limited, London\\
-  via Yak Consultancy
-  \\
-  \And
-  Freddie~Rawlins\thanks{Department of Computer Science, Oxford University. \texttt{freddie@hackpartners.com}}\\
-  Hack Partners Limited, London\\
-  
+Devansh~R.~Agrawal \thanks{Department of Aeronautics, Imperial College London. \texttt{devansh@hackpartners.com}}\\
+Hack Partners Limited, London
+\And
+Peter~Lyon \thanks{Yak Consultancy Ltd, Bulgaria. \texttt{peter@yakconsultancy.com}}\\
+Hack Partners Limited, London\\
+via Yak Consultancy
+\And
+Martin~Frobisher\\
+Network Rail, London
+\And
+Andy~Doherty\\
+Network Rail, London
+\And
+Ben~Allen\\
+Network Rail, London
+\And
+Freddie~Rawlins \thanks{Department of Computer Science, Oxford University. \texttt{freddie@hackpartners.com}}\\
+Hack Partners Limited, London
 }
 
 \begin{document}
+\blfootnote{Permission to make digital or hard copies of all or part of this work for personal use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice on the first page. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or fee. Request permissions from \texttt{mindthegap@hackpartners.com}. No transfer, grant or license of rights under any patent or copyright or to any intellectual property, proprietary information and/or trade secret is made or is to be implied by this notice.
+\copyright 2020 Hack Partners Limited. All rights reserved.}
+\blfootnote{Please send all correspondence and questions to River Baig, \texttt{river@hackpartners.com}}
 \maketitle
+
 
 \begin{abstract}
 
@@ -50,7 +69,7 @@ To the best of our knowledge, this is the first successful such implementation, 
 
 Due to the global spread of the COVID-19 pandemic, many governments worldwide implemented social-distancing guidelines to reduce the rate of transmission amongst the community \cite{WHO2020}. For instance, the UK government has indicated that individuals must remain 2~meters apart, or 1~meter if appropriate measures are in place \cite{UKGuidance}. 
 
-Mind The Gap is a smartphone application developed in response to these requirements. It uses the device's ultrasound\footnote{Technically, we are using near-ultrasound, but for brevity we refer to this simply as ultrasound} and Bluetooth Low Energy capabilities to determine the distance to the closest neighboring smartphone that is running the app, and alert the user if they are closer than the user-specified distance.
+Mind The Gap is a smartphone application developed in response to these requirements. It uses the device's ultrasound\footnote{Technically, we are using near-ultrasound, but for brevity we refer to this simply as ultrasound.} and Bluetooth Low Energy capabilities to determine the distance to the closest neighboring smartphone that is running the app, and alert the user if they are closer than the user-specified distance.
 
 In this paper, we present the fully decentralised, distributed algorithm and audio signal processing method that allows the application to operate in real-time and unstructured environments like offices and outdoors. Our system provides relative indoor distance measurements, with a median absolute error of 8.5~cm, despite obstructions and  multi-path effects. It requires no additional beacons or hardware, and does not require any calibration or  synchronization.  At the time of publication, the application has over 2000 daily active users, with positive feedback on the utility and accuracy of the system.
 
@@ -113,9 +132,9 @@ We can do even better, scaling as $T\sim|C|t/2$, as is discussed in the next sec
 
 Our ranging algorithm is inspired by Symmetrical Double Sided Two-way Ranging. The classical implementation does not require a centralised clock, and can account for processing latency if the device can accurately determine the relative time between when it heard and played the audio pulses.
 
-For simplicity, consider a group of 3 close devices (\Cref{fig:ranging}b). Data and messages are communicated over Bluetooth, and the range is determined by Time of Flight (TOF) of ultrasound pulses. Device A sends a preparation message to all devices it is connected to, and then sends an audio signal which is heard by devices B and C. Timestamps are exchanged before the next device (B or C) takes a turn to generate their audio signal. After each pulse, each device checks to see if it has the necessary timestamps to determine a distance. For instance, the distance between A and C, $d_{AC}$ is
+For simplicity, consider a group of 3 close devices (\Cref{fig:ranging}b). Data and messages are communicated over Bluetooth, and the range is determined by Time of Flight (TOF) of ultrasound pulses. Device A sends a preparation message to all devices it is connected to, and then sends an audio signal which is heard by devices B and C. Timestamps are exchanged before the next device (B or C) takes a turn to generate their audio signal. After each pulse, each device checks to see if it has the necessary timestamps to determine a distance. For instance, the distance between A and C $d_{AC}$ is
 \begin{equation*}
-    d_{AC} = c \frac{(t_{C1} - t_{A1}) + (t_{A3}-t_{C3})}{2}
+    d_{AC} = c \frac{(t_{C1} - t_{A1}) + (t_{A3}-t_{C3})}{2},
 \end{equation*}
 where $c=343$~m/s is the speed of sound. While correcting the speed of sound for local temperature and humidity could increase the accuracy \cite{Peng2007}, this information is not readily available on most regular smartphones.
 
@@ -202,7 +221,7 @@ The application was also tested for robustness in a number of of `noisy' environ
 
 \subsection{Time To Alert Tests}
 \label{sec:timeToAlert}
-\FloatBarrier
+
 \begin{table}[tb]
 \centering
 \caption{Time to Alert in seconds. Refer to \cref{sec:timeToAlert} for test description.}
@@ -244,7 +263,7 @@ The empirical data presented in this paper and the code to produce the graph is 
 
 \section*{Acknowledgements}
 
-The authors would like the thank Hack Partners Limited for financially supporting this project. In addition, we would like to thank Colin Dente and Ben Allen for insightful discussions about the design of the audio processing stack.
+The authors would like the thank Hack Partners Limited for financially supporting this project. In addition, we would like to thank Colin Dente for insightful discussions about the design of the audio processing stack.
 
 
 \bibliographystyle{unsrt}  
