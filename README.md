@@ -6,7 +6,9 @@ In addition, the paper figures are also included.
 
 
 # Access the Paper
-(coming soon)
+A pdf of the paper, and the source latex code is available in this repository.
+
+The link to the final publication is coming soon.
 
 
 # Source code
